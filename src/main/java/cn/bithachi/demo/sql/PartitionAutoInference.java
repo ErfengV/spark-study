@@ -12,7 +12,7 @@ import org.apache.spark.sql.SparkSession;
  */
 public class PartitionAutoInference {
     public static void main(String[] args) {
-        SparkSession sparkSession = SparkSession.builder().appName("SparkSQLAgeDesc").master("local").getOrCreate();
+        SparkSession sparkSession = SparkSession.builder().appName("PartitionAutoInference").master("local").getOrCreate();
 
         Dataset<Row> dataset = sparkSession.read().format("json").load("D:\\code\\IDEA\\SparkStudy\\src\\main\\resources\\other\\people");
         dataset.printSchema();

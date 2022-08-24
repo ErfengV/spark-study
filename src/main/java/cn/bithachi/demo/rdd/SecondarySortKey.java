@@ -1,4 +1,4 @@
-package cn.bithachi.demo;
+package cn.bithachi.demo.rdd;
 
 import scala.math.Ordered;
 

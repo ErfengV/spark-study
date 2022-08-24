@@ -1,4 +1,4 @@
-package cn.bithachi.demo;
+package cn.bithachi.demo.rdd;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;

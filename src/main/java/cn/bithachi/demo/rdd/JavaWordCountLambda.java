@@ -1,16 +1,12 @@
-package cn.bithachi.demo;
+package cn.bithachi.demo.rdd;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.api.java.function.FlatMapFunction;
-import org.apache.spark.api.java.function.Function2;
-import org.apache.spark.api.java.function.PairFunction;
 import scala.Tuple2;
 
 import java.util.Arrays;
-import java.util.Iterator;
 
 /**
  * @Author: BitHachi
@@ -18,7 +14,7 @@ import java.util.Iterator;
  * @Date: 2022/8/15
  * @Description: 单词统计
  */
-public final class JavaWordCount {
+public class JavaWordCountLambda {
     public static void main(String[] args) {
         // 创建SparkConf对象,存储应用程序的配置信息
         SparkConf sparkConf = new SparkConf();
@@ -34,37 +30,17 @@ public final class JavaWordCount {
         JavaRDD<String> linesRDD = sparkContext.textFile("D:\\code\\IDEA\\SparkStudy\\src\\main\\resources\\other\\words.txt");
 
         // 将RDD的每个元素按照空格进行拆分，并将结果合并为一个新的RDD
-        JavaRDD<String> wordRDD = linesRDD.flatMap(new FlatMapFunction<String, String>() {
-            @Override
-            public Iterator<String> call(String s) throws Exception {
-                return Arrays.asList(s.split("\\s+")).iterator();
-            }
-        });
+        JavaRDD<String> wordRDD = linesRDD.flatMap( s -> Arrays.asList(s.split("\\s+")).iterator());
 
         // 将RDD中的每个单词和数字1放到一个元组里，及（word,1）
-        JavaPairRDD<String, Integer> paresRDD = wordRDD.mapToPair(new PairFunction<String, String, Integer>() {
-            @Override
-            public Tuple2<String, Integer> call(String s) throws Exception {
-                return new Tuple2<>(s, 1);
-            }
-        });
+        JavaPairRDD<String, Integer> paresRDD = wordRDD.mapToPair( s -> new Tuple2<>(s, 1));
 
         // 对单词根据Key进行聚合，对相同的key进行value累加
-        JavaPairRDD<String, Integer> wordCountsRDD = paresRDD.reduceByKey(new Function2<Integer, Integer, Integer>() {
-            @Override
-            public Integer call(Integer integer, Integer integer2) throws Exception {
-                return integer + integer2;
-            }
-        });
+        JavaPairRDD<String, Integer> wordCountsRDD = paresRDD.reduceByKey( (integer, integer2) -> integer + integer2);
 
 
         // 转换为数字在前，单词在后，再进行sort排序
-        JavaPairRDD<Integer, String> wordCountsSortRDD = wordCountsRDD.mapToPair(new PairFunction<Tuple2<String, Integer>, Integer, String>() {
-            @Override
-            public Tuple2<Integer, String> call(Tuple2<String, Integer> stringIntegerTuple2) throws Exception {
-                return stringIntegerTuple2.swap();
-            }
-        });
+        JavaPairRDD<Integer, String> wordCountsSortRDD = wordCountsRDD.mapToPair( stringIntegerTuple2 -> stringIntegerTuple2.swap());
 
         // 按照单词数量降序排列
         JavaPairRDD<Integer, String> sortedWOrds = wordCountsSortRDD.sortByKey(false);

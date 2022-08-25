@@ -8,7 +8,7 @@ import org.apache.spark.sql.*;
  * @Author: BitHachi
  * @Email: bithachi@163.com
  * @Date: 2022/8/24
- * @Description:
+ * @Description: Spark SQL的基本使用
  */
 public class SparkSQLAgeDesc {
     public static void main(String[] args) throws AnalysisException {

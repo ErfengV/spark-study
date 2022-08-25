@@ -1,33 +1,21 @@
 package cn.bithachi.demo.sql;
 
 import cn.bithachi.demo.udf.PhoneUDF;
-import org.apache.spark.SparkConf;
-import org.apache.spark.SparkContext;
-import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.rdd.RDD;
 import org.apache.spark.sql.*;
-import org.apache.spark.sql.api.java.UDF0;
-import org.apache.spark.sql.api.java.UDF1;
-import org.apache.spark.sql.types.*;
-import scala.Function0;
-import scala.Tuple1;
-import scala.Tuple2;
-import scala.collection.JavaConverters;
-import scala.collection.Seq;
-import scala.reflect.ClassTag;
+import org.apache.spark.sql.types.DataTypes;
+import org.apache.spark.sql.types.StructField;
+import org.apache.spark.sql.types.StructType;
 
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author: BitHachi
  * @Email: bithachi@163.com
  * @Date: 2022/8/25
- * @Description:
+ * @Description: 自定义函数phoneHide的验证测试
  */
 public class SparkSQLUDF {
     public static void main(String[] args) throws AnalysisException {

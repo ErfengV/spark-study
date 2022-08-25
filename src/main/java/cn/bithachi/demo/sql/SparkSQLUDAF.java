@@ -11,7 +11,7 @@ import org.apache.spark.sql.SparkSession;
  * @Author: BitHachi
  * @Email: bithachi@163.com
  * @Date: 2022/8/25
- * @Description:
+ * @Description: 自定义聚合函数的验证测试
  */
 public class SparkSQLUDAF {
     public static void main(String[] args) throws AnalysisException {

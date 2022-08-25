@@ -14,7 +14,7 @@ import java.util.stream.StreamSupport;
  * @Author: BitHachi
  * @Email: bithachi@163.com
  * @Date: 2022/8/23
- * @Description:
+ * @Description: 计算成绩平均分
  */
 public class AverageScore {
     public static void main(String[] args) {

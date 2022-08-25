@@ -16,7 +16,7 @@ import java.util.Iterator;
  * @Author: BitHachi
  * @Email: bithachi@163.com
  * @Date: 2022/8/15
- * @Description: 单词统计
+ * @Description: 单词计数
  */
 public final class JavaWordCount {
     public static void main(String[] args) {

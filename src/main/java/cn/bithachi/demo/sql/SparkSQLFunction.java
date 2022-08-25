@@ -1,17 +1,14 @@
 package cn.bithachi.demo.sql;
 
 import org.apache.spark.sql.*;
-import org.apache.spark.sql.functions;
 
 import java.util.Properties;
-
-import static org.apache.hadoop.yarn.webapp.hamlet.HamletSpec.Scope.col;
 
 /**
  * @Author: BitHachi
  * @Email: bithachi@163.com
  * @Date: 2022/8/24
- * @Description:
+ * @Description: Spark SQL 内置函数的验证测试
  */
 public class SparkSQLFunction {
     public static void main(String[] args) throws AnalysisException {

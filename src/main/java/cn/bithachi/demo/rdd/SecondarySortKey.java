@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
+ * 二次排序
  *
  * 比较器：
  * 1. 实现 Ordered<T> 和 Serializable 接口

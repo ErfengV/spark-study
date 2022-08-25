@@ -9,7 +9,7 @@ import org.apache.spark.sql.SparkSession;
  * @Author: BitHachi
  * @Email: bithachi@163.com
  * @Date: 2022/8/24
- * @Description:
+ * @Description: 读取JSON数据集进行JOIN查询
  */
 public class SparkSQLJsonSelect {
     public static void main(String[] args) throws AnalysisException {

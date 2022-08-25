@@ -9,7 +9,7 @@ import org.apache.spark.sql.SparkSession;
  * @Author: BitHachi
  * @Email: bithachi@163.com
  * @Date: 2022/8/24
- * @Description: Schema合并
+ * @Description: Parquet文件读取和合并
  */
 public class SparkSQLMergeSchema {
     public static void main(String[] args) {

@@ -12,7 +12,7 @@ import java.util.Arrays;
  * @Author: BitHachi
  * @Email: bithachi@163.com
  * @Date: 2022/8/15
- * @Description: 单词统计
+ * @Description: 单词计数
  */
 public class JavaWordCountLambda {
     public static void main(String[] args) {

@@ -10,7 +10,7 @@ import java.util.Properties;
  * @Author: BitHachi
  * @Email: bithachi@163.com
  * @Date: 2022/8/24
- * @Description:
+ * @Description: jdbc链接mysql查询数据
  */
 public class SparkSQLJdbc {
     public static void main(String[] args) {

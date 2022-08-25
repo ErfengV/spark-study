@@ -15,7 +15,9 @@ import java.util.stream.StreamSupport;
  * @Author: BitHachi
  * @Email: bithachi@163.com
  * @Date: 2022/8/24
- * @Description: 2020-01-01,user1
+ * @Description:  倒排索引统计每日新增用户
+ *
+ * 2020-01-01,user1
  * 2020-01-01,user2
  * 2020-01-01,user3
  * 2020-01-02,user1

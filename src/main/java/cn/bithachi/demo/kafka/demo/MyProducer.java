@@ -1,4 +1,4 @@
-package cn.bithachi.demo.kafka;
+package cn.bithachi.demo.kafka.demo;
 
 import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.IntegerSerializer;

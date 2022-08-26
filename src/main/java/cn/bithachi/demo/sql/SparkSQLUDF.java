@@ -1,6 +1,6 @@
 package cn.bithachi.demo.sql;
 
-import cn.bithachi.demo.udf.PhoneUDF;
+import cn.bithachi.demo.sql.udf.PhoneUDF;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.*;

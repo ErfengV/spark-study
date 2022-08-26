@@ -1,6 +1,6 @@
 package cn.bithachi.demo.sql;
 
-import cn.bithachi.demo.udaf.MyAverage;
+import cn.bithachi.demo.sql.udaf.MyAverage;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.AnalysisException;
 import org.apache.spark.sql.Dataset;

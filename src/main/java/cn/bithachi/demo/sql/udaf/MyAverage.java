@@ -1,4 +1,4 @@
-package cn.bithachi.demo.udaf;
+package cn.bithachi.demo.sql.udaf;
 
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.expressions.MutableAggregationBuffer;

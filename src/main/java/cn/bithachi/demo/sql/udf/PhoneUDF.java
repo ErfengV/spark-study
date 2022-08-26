@@ -1,4 +1,4 @@
-package cn.bithachi.demo.udf;
+package cn.bithachi.demo.sql.udf;
 
 import org.apache.spark.sql.api.java.UDF1;
 

@@ -1,4 +1,4 @@
-package cn.bithachi.demo.streaming;
+package cn.bithachi.demo.socket;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -12,7 +12,7 @@ import java.net.Socket;
  * @Date: 2022/8/26
  * @Description:
  */
-public class BlackListSocket {
+public class SparkSocket {
     static ServerSocket serverSocket = null;
     static PrintWriter pw = null;
 
@@ -24,16 +24,9 @@ public class BlackListSocket {
             System.out.println("连接成功，来自：" + socket.getRemoteSocketAddress());
             pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
             int j = 0;
-            while (j < 100) {
-                String str = null;
+            while(true) {
                 j++;
-                if (j % 2 == 0) {
-                    str = System.currentTimeMillis() + " " + "tom";
-                } else if (j % 3 == 0) {
-                    str = System.currentTimeMillis() + " " + "leo";
-                } else {
-                    str = System.currentTimeMillis() + " " + "USER-" + j;
-                }
+                String str = "spark streaming test " + j;
                 pw.println(str);
                 pw.flush();
                 System.out.println(str);

@@ -1,9 +1,8 @@
 package cn.bithachi.demo.sql;
 
-import org.apache.spark.sql.AnalysisException;
-import org.apache.spark.sql.Dataset;
-import org.apache.spark.sql.Row;
-import org.apache.spark.sql.SparkSession;
+import cn.bithachi.demo.pojo.Student;
+import org.apache.spark.api.java.function.MapFunction;
+import org.apache.spark.sql.*;
 
 /**
  * @Author: BitHachi
@@ -17,13 +16,16 @@ public class SparkSQLJsonSelect {
                 .appName("SparkSQLJsonSelect")
                 .master("local").getOrCreate();
 
-        Dataset<Row> stuInfo = sparkSession.read().json("D:\\code\\IDEA\\SparkStudy\\src\\main\\resources\\other\\student\\stuInfo.json");
-        stuInfo.createTempView("user_info");
+        Dataset<Row> stuInfo = sparkSession.read().json("other/student/stuInfo.json");
+        Dataset<Student> studentDataset = stuInfo.map((MapFunction<Row , Student >) line ->
+                new Student(line.getAs("name"), line.getAs("age"),line.getAs("sex")), Encoders.bean(Student.class));
+        studentDataset.createTempView("user_info");
         stuInfo.show();
 
-        Dataset<Row> stuScore = sparkSession.read().json("D:\\code\\IDEA\\SparkStudy\\src\\main\\resources\\other\\student\\stuScore.json");
+        Dataset<Row> stuScore = sparkSession.read().json("other/student/stuScore.json");
         stuScore.createTempView("user_score");
         stuScore.show();
+
 
         Dataset<Row> dataset = sparkSession.sql("SELECT i.name,c.grade FROM user_info i " + "JOIN user_score c ON i.name=c.name");
         dataset.show();

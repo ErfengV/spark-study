@@ -31,7 +31,7 @@ public final class JavaWordCount {
         JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
 
         // 读取指定路径（取程序执行时传入的第一个参数）中文件的内容，生成一个RDD集合
-        JavaRDD<String> linesRDD = sparkContext.textFile("D:\\code\\IDEA\\SparkStudy\\src\\main\\resources\\other\\words.txt");
+        JavaRDD<String> linesRDD = sparkContext.textFile("other/words.txt");
 
         // 将RDD的每个元素按照空格进行拆分，并将结果合并为一个新的RDD
         JavaRDD<String> wordRDD = linesRDD.flatMap(new FlatMapFunction<String, String>() {
@@ -70,7 +70,7 @@ public final class JavaWordCount {
         JavaPairRDD<Integer, String> sortedWOrds = wordCountsSortRDD.sortByKey(false);
 
         // 保存结果到指定的路径（取程序运行时传入的第二个参数）
-        sortedWOrds.saveAsTextFile("D:\\code\\IDEA\\SparkStudy\\src\\main\\resources\\output");
+        sortedWOrds.saveAsTextFile("output");
 
         // 停止SparkContext，结束该任务
         sparkContext.stop();

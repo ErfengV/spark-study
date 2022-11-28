@@ -48,7 +48,7 @@ public class SparkJson {
                 "-- 求出该门店下所有员工的排名\n" +
                 "with rank_tab as (\n" +
                 "select score,class_name,id,store_code,username\n" +
-                ",rank() over(partition by store_code order by score desc) as rank\n" +
+                ",rank() over(partition by store_code order by score desc) as rank \n" +
                 "from stu \n" +
                 "),\n" +
                 "\n" +
@@ -58,143 +58,43 @@ public class SparkJson {
                 "count(1) as people_count,store_code \n" +
                 "from stu group by store_code\n" +
                 "),\n" +
-                "\n" +
-                "---------- 计算。营销能手奖200\n" +
-                "-- 当总人数大于20人时 计算出相应的奖励人数\n" +
-                "quota_gt20_tab as(\n" +
-                "select \n" +
-                "floor(people_count * 0.3) as quota\n" +
-                ",store_code\n" +
-                ",floor(floor(people_count * 0.3) * 0.3) as first\n" +
-                ",floor(floor(people_count * 0.3) * 0.3) * 2 as second\n" +
-                "from people_count_tab where people_count > 20\n" +
-                "),\n" +
-                "-- 只计算大于20人的\n" +
-                "count_gt20_ans as ( \n" +
-                "select  \n" +
-                "case when t1.rank <= t2.first then 150\n" +
-                "\t when t1.rank <=t2.second then 100\n" +
-                "\t when t1.rank <= t2.quota then 50\n" +
-                "else 0 end as award,\n" +
-                "t1.username,\n" +
-                "t1.store_code,\n" +
-                "t1.class_name\n" +
-                "from rank_tab t1 inner join quota_gt20_tab t2 on t1.store_code = t2.store_code\n" +
-                "),\n" +
                 "-- 当营销员的人数在3 - 5 \n" +
-                "quota_lt3_5_tab as (\n" +
+                "b_quota_lt3_5_tab as (\n" +
                 "select \n" +
                 "1 as quota\n" +
                 ",store_code \n" +
                 "from people_count_tab where people_count between 3 and 5\n" +
                 "),\n" +
+                "rank_one_lt3_5_tab as (\n" +
+                "select t1.store_code,t1.score from rank_tab t1 inner join b_quota_lt3_5_tab t2 on t1.store_code = t2.store_code\n" +
+                "where t1.rank = 1\n" +
+                "),\n" +
+                "rank_two_lt3_5_tab as (\n" +
+                "select t1.store_code,t1.score from rank_tab t1 inner join b_quota_lt3_5_tab t2 on t1.store_code = t2.store_code\n" +
+                "where t1.rank = 2\n" +
+                "),\n" +
+                "rank_res_lt3_5_tab as (\n" +
+                "select\n" +
+                "case when t1.score > t2.score * 0.2 then 400\n" +
+                "\t when t1.score < t2.score * 0.1 then 200\n" +
+                "else 300 end as award,\n" +
+                "t1.store_code  \n" +
+                "from rank_one_lt3_5_tab t1 inner join rank_two_lt3_5_tab t2 on t1.store_code = t2.store_code\n" +
+                "),\n" +
                 "-- 只计算 3 - 5人的\n" +
-                "count_lt3_5_ans as (\n" +
+                "b_count_lt3_5_ans as (\n" +
                 "select \n" +
-                "case when t1.rank = t2.quota then 150 \n" +
+                "case when t1.rank = t2.quota  then t3.award \n" +
                 "else 0 end as award,\n" +
                 "t1.username,\n" +
                 "t1.store_code,\n" +
                 "t1.class_name\n" +
-                "from rank_tab t1 inner join quota_lt3_5_tab t2 on t1.store_code = t2.store_code\n" +
-                "),\n" +
-                "\n" +
-                "\n" +
-                "-- 当营销员的人数在6 - 8 \n" +
-                "quota_lt6_8_tab as (\n" +
-                "select \n" +
-                "2 as quota \n" +
-                ",1 as first\n" +
-                ",store_code\n" +
-                "from people_count_tab where people_count between 6 and 8\n" +
-                "),\n" +
-                "-- 只计算 6 - 8人的\n" +
-                "count_lt6_8_ans as (\n" +
-                "select \n" +
-                "case when t1.rank = t2.first then 150 \n" +
-                "\t when t1.rank = t2.quota then 120\n" +
-                "else 0 end as award\n" +
-                ",t1.username\n" +
-                ",t1.store_code\n" +
-                ",t1.class_name\n" +
-                "from rank_tab t1 inner join quota_lt6_8_tab t2 on t1.store_code = t2.store_code\n" +
-                "),\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "-- 当营销员的人数在9 - 12 \n" +
-                "quota_lt9_12_tab as (\n" +
-                "select \n" +
-                "3 as quota \n" +
-                ",1 as first\n" +
-                ",2 as second\n" +
-                ",store_code\n" +
-                "from people_count_tab where people_count between 9 and 12\n" +
-                "),\n" +
-                "-- 只计算 9 - 12人的\n" +
-                "count_lt9_12_ans as (\n" +
-                "select \n" +
-                "case when t1.rank = t2.first  then 150 \n" +
-                "\t when t1.rank = t2.second then 120\n" +
-                "\t when t1.rank = t2.quota  then 100\n" +
-                "else 0 end as award\n" +
-                ",t1.username\n" +
-                ",t1.store_code\n" +
-                ",t1.class_name\n" +
-                "from rank_tab t1 inner join quota_lt9_12_tab t2 on t1.store_code = t2.store_code\n" +
-                "),\n" +
-                "\n" +
-                "-- 当营销员人数在13 - 15 人时\n" +
-                "quota_lt13_15_tab as (\n" +
-                "select \n" +
-                "4 as quota \n" +
-                ",1 as first\n" +
-                ",2 as second\n" +
-                ",3 as third\n" +
-                ",store_code\n" +
-                "from people_count_tab where people_count between 13 and 15\n" +
-                "),\n" +
-                "-- 只计算 13 - 15人的\n" +
-                "count_lt13_15_ans as (\n" +
-                "select \n" +
-                "case when t1.rank = t2.first  then 150 \n" +
-                "\t when t1.rank = t2.second then 120\n" +
-                "\t when t1.rank = t2.third  then 100\n" +
-                "\t when t1.rank = t2.quota  then 80\n" +
-                "else 0 end as award\n" +
-                ",t1.username\n" +
-                ",t1.store_code\n" +
-                ",t1.class_name\n" +
-                "from rank_tab t1 inner join quota_lt13_15_tab t2 on t1.store_code = t2.store_code\n" +
-                "),\n" +
-                "\n" +
-                "\n" +
-                "-- 当营销员人数在16 - 20人时\n" +
-                "quota_lt16_20_tab as (\n" +
-                "select \n" +
-                "5 as quota \n" +
-                ",1 as first\n" +
-                ",2 as second\n" +
-                ",3 as third\n" +
-                ",4 as fourth\n" +
-                ",store_code\n" +
-                "from people_count_tab where people_count between 16 and 20\n" +
-                "),\n" +
-                "-- 只计算 16 - 20人的\n" +
-                "count_lt16_20_ans as (\n" +
-                "select \n" +
-                "case when t1.rank = t2.first  then 150 \n" +
-                "\t when t1.rank = t2.second then 120\n" +
-                "\t when t1.rank = t2.third  then 100\n" +
-                "\t when t1.rank = t2.fourth then 80\n" +
-                "\t when t1.rank = t2.quota  then 50\n" +
-                "else 0 end as award\n" +
-                ",t1.username\n" +
-                ",t1.store_code\n" +
-                ",t1.class_name\n" +
-                "from rank_tab t1 inner join quota_lt16_20_tab t2 on t1.store_code = t2.store_code\n" +
+                "from rank_tab t1 \n" +
+                "inner join b_quota_lt3_5_tab t2 on t1.store_code = t2.store_code\n" +
+                "left join rank_res_lt3_5_tab t3 on t1.store_code = t3.store_code\n" +
                 ")\n" +
-                "select * from count_gt20_ans\n"
+                "select * from b_count_lt3_5_ans\n" +
+                "\n"
         ).write().format("csv").mode("overwrite").save("other/test_ans");
 
 
